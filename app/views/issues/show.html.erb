@@ -5,10 +5,10 @@
       <div class="navbar-header navbar-brand"><%= link_to issues_path do %><span class="glyphicon glyphicon-chevron-left"></span> Back to Issues<% end %></div>
 
       <% if user_signed_in? %>
-      	<div class="ui-group-buttons pull-right">
-			<%= link_to issue_upvote_path, :class => 'btn btn-success', :id => 'upvote-button', :issue_id => @issue.id do %><span class="glyphicon glyphicon-thumbs-up"> Yay</span><% end %>
-			<div class="or"></div>
-			<%= link_to issue_downvote_path, :class => 'btn btn-success', :id => 'downvote-button', :issue_id => @issue.id do %><span class="glyphicon glyphicon-thumbs-down"> Nay</span><% end %>
+      	<div class="ui-group-buttons pull-right" id="vote-menu">
+			<%= link_to upvote_issue_path, :class => 'btn btn-success btn-lg', :id => 'upvote-button', :issue_id => @issue.id do %><span class="glyphicon glyphicon-thumbs-up"></span> Yay<% end %>
+			<div class="or or-lg"></div>
+			<%= link_to downvote_issue_path, :class => 'btn btn-danger btn-lg', :id => 'downvote-button', :issue_id => @issue.id do %><span class="glyphicon glyphicon-thumbs-down"></span> Nay<% end %>
 		</div>
 	<% end %>
 
@@ -36,10 +36,6 @@
 </p>
 
 <p>
-  <b>Comments:</b>
-<% if user_signed_in? %>
-  <%= text.area :comment %>
- <% end %>
 
 <%= link_to 'Edit', edit_issue_path(@issue) %> |
 <%= link_to 'Back', issues_path %>

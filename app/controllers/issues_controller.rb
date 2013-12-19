@@ -1,4 +1,6 @@
 class IssuesController < ApplicationController
+  before_filter :authenticate_user!, :except => [:index, :show]
+
   # GET /issues
   # GET /issues.json
   def index
@@ -55,16 +57,27 @@ class IssuesController < ApplicationController
 
   # GET /issues/1/upvote
   def upvote
-    @issue = Issue.find(params[:id])
-    @issue.votes.create
-    redirect_to(issues_path)
+    
+    issue = Issue.find(params[:id])
+    user = current_user
+
+    vote = Vote.where(user:user, issue:issue)
+
+    if vote.nil?
+      flash[:notice] = "You voted Yay for this issue!"
+    else
+      Vote.destroy(vote.id)
+      flash[:notice] = "You changed your vote to Yay for this issue!"
+    end
+
+    Vote.create(user:user, issue:issue, vote_type:Vote::TYPES[:up_vote])
+
+    redirect_to issues_path
   end
 
   # GET /issues/1/downvote
   def downvote
-    @issue = Issue.find(params[:id])
-    @issue = Issue.votes.create
-    redirect_to(issues_path)
+    
   end
 
   # PUT /issues/1

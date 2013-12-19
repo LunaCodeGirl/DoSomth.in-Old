@@ -6,10 +6,12 @@ DoSomthIn::Application.routes.draw do
 
   resources :application
 
-  get 'issues/:issue_id/upvote' => 'issues#upvote', :as => :issue_upvote
-  get 'issues/:issue_id/downvote' => 'issues#downvote', :as => :issue_downvote
-
-  resources :issues
+  resources :issues do
+    member do
+      get 'upvote'
+      get 'downvote'
+    end
+  end
 
   get 'user/dashboard' => 'users#dashboard', :as => :dashboard
 
